@@ -1,9 +1,10 @@
-FROM node:latest
+FROM node:16
 
 RUN mkdir /usr/src/app && mkdir /usr/src/app/frontend
  
 WORKDIR /usr/src/app/frontend
 
-RUN npm install -g @angular/cli 
+RUN npm install -g @angular/cli@16.2.15 
+# RUN export NODE_OPTIONS=--openssl-legacy-provider && npm install -g @angular/cli 
 
 COPY . .
