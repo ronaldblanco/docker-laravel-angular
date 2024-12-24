@@ -63,10 +63,15 @@ frontend: `localhost:4200`
 phpmyadmin: `localhost:7000`
 
 Versions:
+
 php 7.4.33
+
 Laravel 7.30.7
+
 node 16.20.2
+
 npm 8.19.4
+
 angular/cli 16.2.15
 
 To rebuild a container without afecting others:
