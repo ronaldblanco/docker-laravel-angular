@@ -4,7 +4,7 @@ This template has been designed to meet the following requirements:
 
 A backend container with official dockerhub image php: 7.4-fpm PHP version 7.4 and Supervisor with php command artisan queue: work
 
-A frontend container with the official dockerhub node image: latest and angular CLI
+A frontend container with the official dockerhub node image: 16.20.2 and angular CLI 16.2.15
 
 A mysql container with official mysql: latest dockerhub image
 
@@ -35,7 +35,7 @@ Then:
 
 Once all the containers are initialized, you need to connect to the backend container:
 
-`docker exec -t -i backend / bin / bash`
+`docker exec -it local_backend /bin/bash`
 
 we will find ourselves already in the folder / var / www / backend
 
@@ -51,6 +51,9 @@ For the backend it is not necessary to execute the command php artisan because t
 
 As for the frontend (Angular) I made sure to expose the 4200, in this way you edit the file locally but links it on the docker instantly and angular cli does the rest on the docker.
 
+To connect to the frontend container:
+`docker exec -it local_frontend /bin/bash`
+
 So here are the links currently configured:
 
 backend: `localhost:8000`
@@ -59,6 +62,12 @@ frontend: `localhost:4200`
 
 phpmyadmin: `localhost:7000`
 
+Versions:
+php 7.4.33
+Laravel 7.30.7
+node 16.20.2
+npm 8.19.4
+angular/cli 16.2.15
 
-
-
+To rebuild a container without afecting others:
+`docker-compose up -d --no-deps --build frontend`

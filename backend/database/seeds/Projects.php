@@ -22,7 +22,7 @@ class Projects extends Seeder
             ],
             [
                 'name' => 'Project Beta',
-                'hours' => 80,
+                'hours' => 140,
                 'description' => 'This project focuses on backend optimization.',
                 'created_at' => now(),
                 'updated_at' => now(),

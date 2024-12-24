@@ -20,8 +20,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//http://localhost:8000/api/projects?offset=0&limit=100&member=bob
 Route::get('/projects', function (Request $request) {
-    return Project::with('members')->get();
+    $result = Project::with(["tasks", "tasks.member"]);
+    if($request['member'] == null) return $result->with(['members', "members.tasks"])->skip($request['offset']?$request['offset']:0)->take($request['limit']?$request['limit']:100)->get();
+    else return $result->with(['members'=>function ($query) use ($request) {
+        $query->where('name','like', '%'.$request['member'].'%');
+    },"members.tasks"])->whereHas('members', function ($query) use ($request) {
+        $query->where('name', 'like', '%' . $request['member'] . '%');
+    })->with(['members', "members.tasks"])->skip($request['offset']?$request['offset']:0)->take($request['limit']?$request['limit']:100)->get();
 });
 
 //http://localhost:8000/api/projectsby?user=Bob
@@ -38,6 +45,7 @@ Route::get('/projectstasks', function (Request $request) {
     return Project::where('name','like', '%'.$request['project'].'%')->with(['tasks',"tasks.member"])->get();
 });
 
+//http://localhost:8000/api/members
 Route::get('/members', function (Request $request) {
     return Member::with('projects')->get();
 });

@@ -1,0 +1,23 @@
+/* styles.css */
+.styled-table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  .styled-table th, 
+  .styled-table td {
+    border: 1px solid #000;
+    padding: 8px;
+  }
+  
+  .styled-table th {
+    background-color: #f4f4f4;
+  }
+
+  button {
+    padding: 10px;
+    border: solid 1px var(black);
+    background: var(rgb(46, 79, 224));
+    color: grey;
+    border-radius: 8px;
+  }
