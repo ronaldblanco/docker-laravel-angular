@@ -17,6 +17,14 @@ services:
             - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
         networks:
             - private
+        deploy:
+            resources:
+                limits:
+                    memory: 256M    # Limit memory usage to 256MB
+                    cpus: "1.0"     # Allocate up to one CPU core
+                reservations:
+                    memory: 128M    # Reserve 128MB of memory
+                    cpus: "0.5"     # Reserve 50% of one CPU core
 
     # Frontend Service
     frontend:
@@ -34,6 +42,14 @@ services:
             bash -c "npm install && chmod -fR 777 node_modules && echo Completed && ng serve --host 0.0.0.0 --port 4200 --live-reload --poll=5000"
         networks:
             - private
+        deploy:
+            resources:
+                limits:
+                    memory: 2048M    # Limit memory usage to 1024MB
+                    cpus: "1.0"     # Allocate up to one CPU core
+                reservations:
+                    memory: 128M    # Reserve 128MB of memory
+                    cpus: "0.5"     # Reserve 50% of one CPU core
 
     # Nginx Service
     webserver:
@@ -48,6 +64,14 @@ services:
             - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
         networks:
             - private
+        deploy:
+            resources:
+                limits:
+                    memory: 256M    # Limit memory usage to 256MB
+                    cpus: "1.0"     # Allocate up to one CPU core
+                reservations:
+                    memory: 128M    # Reserve 128MB of memory
+                    cpus: "0.5"     # Reserve 50% of one CPU core
 
     # MySQL Service
     mysql:
@@ -66,6 +90,14 @@ services:
             - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
         networks:
             - private
+        deploy:
+            resources:
+                limits:
+                    memory: 256M    # Limit memory usage to 256MB
+                    cpus: "1.0"     # Allocate up to one CPU core
+                reservations:
+                    memory: 128M    # Reserve 128MB of memory
+                    cpus: "0.5"     # Reserve 50% of one CPU core
 
     # PHPMYADMIN Service
     phpmyadmin:
@@ -83,6 +115,36 @@ services:
             PMA_HOST: mysql
         networks:
             - private
+        deploy:
+            resources:
+                limits:
+                    memory: 128M    # Limit memory usage to 256MB
+                    cpus: "1.0"     # Allocate up to one CPU core
+                reservations:
+                    memory: 128M    # Reserve 128MB of memory
+                    cpus: "0.2"     # Reserve 50% of one CPU core
+
+    # Backend Balancer
+    haproxy:
+        container_name: "${PROJECT_NAME}_backend_balancer"
+        build:
+            context: .
+            dockerfile: ./docker/balancer/DockerFile
+        ports:
+            - "8001:80"
+        restart: unless-stopped
+        volumes:
+            - ./docker/balancer/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+        networks:
+            - private
+        deploy:
+            resources:
+                limits:
+                    memory: 256M    # Limit memory usage to 256MB
+                    cpus: "1.0"     # Allocate up to one CPU core
+                reservations:
+                    memory: 128M    # Reserve 128MB of memory
+                    cpus: "0.5"     # Reserve 50% of one CPU core
 
 # Docker Networks
 networks:
